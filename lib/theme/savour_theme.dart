@@ -64,11 +64,15 @@ ThemeData buildSavourTheme() {
     // switch nearly invisible, so give switches explicit colours.
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return Colors.white;
+        if (states.contains(WidgetState.selected)) {
+          return Colors.white;
+        }
         return SavourColors.muted;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return SavourColors.terracotta;
+        if (states.contains(WidgetState.selected)) {
+          return SavourColors.terracotta;
+        }
         return SavourColors.sand;
       }),
       trackOutlineColor: WidgetStateProperty.resolveWith((states) {
