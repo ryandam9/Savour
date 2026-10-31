@@ -72,7 +72,9 @@ ThemeData buildSavourTheme() {
         return SavourColors.sand;
       }),
       trackOutlineColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return Colors.transparent;
+        if (states.contains(WidgetState.selected)) {
+          return Colors.transparent;
+        }
         return SavourColors.muted;
       }),
     ),
