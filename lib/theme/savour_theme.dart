@@ -20,6 +20,7 @@ ThemeData buildSavourTheme() {
   );
   return ThemeData(
     useMaterial3: true,
+    fontFamily: 'DM Sans',
     colorScheme: scheme.copyWith(
       primary: SavourColors.terracotta,
       onPrimary: Colors.white,
@@ -67,16 +68,31 @@ ThemeData buildSavourTheme() {
 
 TextStyle editorialTitle({double size = 38, FontWeight weight = FontWeight.w500}) =>
     TextStyle(
-      fontFamily: 'serif',
+      fontFamily: 'Cormorant Garamond',
       fontSize: size,
       fontWeight: weight,
       height: 1.05,
-      letterSpacing: -1.5,
+      letterSpacing: -0.55,
       color: SavourColors.ink,
     );
 
 TextStyle eyebrow({double size = 10}) => const TextStyle(
+  fontFamily: 'DM Sans',
   fontWeight: FontWeight.w800,
   letterSpacing: 2.1,
   color: SavourColors.terracotta,
 ).copyWith(fontSize: size);
+
+// Reusable editorial font for overlays, branding and secondary serif accents.
+TextStyle savourSerif({
+  required double size,
+  Color color = SavourColors.ink,
+  FontWeight weight = FontWeight.w500,
+  double? height,
+}) => TextStyle(
+  fontFamily: 'Cormorant Garamond',
+  fontSize: size,
+  fontWeight: weight,
+  height: height,
+  color: color,
+);

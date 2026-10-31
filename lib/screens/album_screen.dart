@@ -247,7 +247,7 @@ class _PhotoTile extends StatelessWidget {
             Text(DateFormat('d MMM').format(entry.eatenAt).toUpperCase(), style: const TextStyle(fontSize: 9, letterSpacing: 1.3, fontWeight: FontWeight.w800, color: Color(0xFFEADDD4))),
             if (entry.name.trim().isNotEmpty) ...[
               const SizedBox(height: 5),
-              Text(entry.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: 'serif', color: Colors.white, fontSize: 19, height: 1.05, fontWeight: FontWeight.w600)),
+              Text(entry.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: 'Cormorant Garamond', color: Colors.white, fontSize: 19, height: 1.05, fontWeight: FontWeight.w600)),
             ],
           ],
         )),

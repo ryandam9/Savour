@@ -27,6 +27,15 @@ flutter:
   uses-material-design: true
   assets:
     - assets/branding/
+    - assets/fonts/LICENSE-DMSans.txt
+    - assets/fonts/LICENSE-CormorantGaramond.txt
+  fonts:
+    - family: DM Sans
+      fonts:
+        - asset: assets/fonts/DMSans.ttf
+    - family: Cormorant Garamond
+      fonts:
+        - asset: assets/fonts/CormorantGaramond.ttf
 
 flutter_launcher_icons:
   android: true

@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,6 +16,15 @@ import 'theme/savour_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  LicenseRegistry.addLicense(() async* {
+    for (final (family, path) in [
+      ('DM Sans', 'assets/fonts/LICENSE-DMSans.txt'),
+      ('Cormorant Garamond', 'assets/fonts/LICENSE-CormorantGaramond.txt'),
+    ]) {
+      final license = await rootBundle.loadString(path);
+      yield LicenseEntryWithLineBreaks([family], license);
+    }
+  });
   runApp(const SavourApp());
 }
 
@@ -332,7 +343,7 @@ class _BootScreen extends StatelessWidget {
         children: [
           Icon(Icons.restaurant_menu_rounded, color: SavourColors.terracotta, size: 48),
           SizedBox(height: 20),
-          Text('savour.', style: TextStyle(fontFamily: 'serif', fontSize: 43, fontWeight: FontWeight.w600, color: SavourColors.ink)),
+          Text('savour.', style: TextStyle(fontFamily: 'Cormorant Garamond', fontSize: 43, fontWeight: FontWeight.w600, color: SavourColors.ink)),
           SizedBox(height: 28),
           CircularProgressIndicator(strokeWidth: 2),
         ],

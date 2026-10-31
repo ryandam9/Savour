@@ -66,7 +66,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             child: Column(children: [
               Row(children: [
                 IconButton(tooltip: 'Previous month', onPressed: () => _moveMonth(-1), icon: const Icon(Icons.chevron_left_rounded)),
-                Expanded(child: Text(DateFormat('MMMM yyyy').format(_month), textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'serif', fontSize: 22, fontWeight: FontWeight.w600))),
+                Expanded(child: Text(DateFormat('MMMM yyyy').format(_month), textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'Cormorant Garamond', fontSize: 22, fontWeight: FontWeight.w600))),
                 IconButton(tooltip: 'Next month', onPressed: () => _moveMonth(1), icon: const Icon(Icons.chevron_right_rounded)),
               ]),
               const SizedBox(height: 15),
