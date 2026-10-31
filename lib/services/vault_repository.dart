@@ -186,6 +186,9 @@ class VaultRepository extends ChangeNotifier {
     }
   }
 
+  /// The thumbnail if it is already decrypted in memory, without any I/O.
+  Uint8List? cachedThumbnail(String id) => _thumbnailCache[id];
+
   Future<Uint8List> thumbnail(String id) async {
     final cached = _thumbnailCache[id];
     if (cached != null) { return cached; }

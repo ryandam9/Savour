@@ -266,7 +266,9 @@ class _ZoomablePhotoState extends State<_ZoomablePhoto> {
                 entryId: widget.entryId,
                 fullResolution: true,
                 fit: BoxFit.contain,
-                backgroundColor: Colors.black,
+                // Transparent: during the Hero flight the image is drawn above
+                // the whole page, and a black box would hide the controls.
+                backgroundColor: Colors.transparent,
               ),
             ),
           ),

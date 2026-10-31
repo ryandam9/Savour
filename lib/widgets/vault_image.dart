@@ -26,6 +26,9 @@ class VaultImage extends StatefulWidget {
 
 class _VaultImageState extends State<VaultImage> {
   late Future<Uint8List> _image;
+  // An already-decrypted thumbnail, shown on the very first frame so the
+  // widget never flashes empty while the future resolves.
+  Uint8List? _cachedThumbnail;
 
   @override
   void initState() {
@@ -43,40 +46,62 @@ class _VaultImageState extends State<VaultImage> {
   }
 
   void _load() {
+    _cachedThumbnail = widget.repository.cachedThumbnail(widget.entryId);
     _image = widget.fullResolution
         ? widget.repository.photo(widget.entryId)
         : widget.repository.thumbnail(widget.entryId);
   }
 
+  Widget _memory(Uint8List bytes, {bool hideUntilDecoded = false}) => Image.memory(
+    bytes,
+    fit: widget.fit,
+    width: double.infinity,
+    height: double.infinity,
+    gaplessPlayback: true,
+    // Keeps the layer underneath visible until this image can be drawn.
+    frameBuilder: hideUntilDecoded
+        ? (context, child, frame, sync) =>
+            sync || frame != null ? child : const SizedBox.shrink()
+        : null,
+    errorBuilder: (context, error, stackTrace) => ColoredBox(
+      color: widget.backgroundColor,
+      child: const Center(child: Icon(Icons.broken_image_outlined)),
+    ),
+  );
+
+  Widget _loading() => ColoredBox(
+    color: widget.backgroundColor,
+    child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+  );
+
   @override
-  Widget build(BuildContext context) => FutureBuilder<Uint8List>(
-    future: _image,
-    builder: (context, snapshot) {
-      if (snapshot.hasError) {
-        return Container(
-          color: widget.backgroundColor,
-          alignment: Alignment.center,
-          child: const Icon(Icons.broken_image_outlined, color: SavourColors.muted),
-        );
-      }
-      if (!snapshot.hasData) {
+  Widget build(BuildContext context) {
+    final placeholder = _cachedThumbnail;
+    return FutureBuilder<Uint8List>(
+      future: _image,
+      initialData: widget.fullResolution ? null : placeholder,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Container(
+            color: widget.backgroundColor,
+            alignment: Alignment.center,
+            child: const Icon(Icons.broken_image_outlined, color: SavourColors.muted),
+          );
+        }
+        if (!widget.fullResolution) {
+          return snapshot.hasData ? _memory(snapshot.data!) : _loading();
+        }
+        // Full resolution: the cached thumbnail stays underneath until the
+        // full photo has decoded on top of it.
         return ColoredBox(
           color: widget.backgroundColor,
-          child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          child: Stack(fit: StackFit.expand, children: [
+            if (placeholder != null) _memory(placeholder)
+            else if (!snapshot.hasData) const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            if (snapshot.hasData) _memory(snapshot.data!, hideUntilDecoded: true),
+          ]),
         );
-      }
-      return Image.memory(
-        snapshot.data!,
-        fit: widget.fit,
-        width: double.infinity,
-        height: double.infinity,
-        gaplessPlayback: true,
-        errorBuilder: (context, error, stackTrace) =>
-            ColoredBox(
-              color: widget.backgroundColor,
-              child: const Center(child: Icon(Icons.broken_image_outlined)),
-            ),
-      );
-    },
-  );
+      },
+    );
+  }
 }
