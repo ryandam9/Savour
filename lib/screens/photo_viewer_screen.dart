@@ -227,9 +227,12 @@ class _ZoomablePhotoState extends State<_ZoomablePhoto> {
     } else {
       final point = _doubleTap?.localPosition ?? Offset.zero;
       const scale = 2.5;
-      _transform.value = Matrix4.identity()
-        ..translate(-point.dx * (scale - 1), -point.dy * (scale - 1))
-        ..scale(scale);
+      final matrix = Matrix4.identity()
+        ..setEntry(0, 0, scale)
+        ..setEntry(1, 1, scale)
+        ..setEntry(0, 3, -point.dx * (scale - 1))
+        ..setEntry(1, 3, -point.dy * (scale - 1));
+      _transform.value = matrix;
     }
   }
 
