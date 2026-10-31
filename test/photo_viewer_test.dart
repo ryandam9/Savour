@@ -73,10 +73,10 @@ void main() {
     expect(find.text('2 / 2'), findsOneWidget);
     expect(find.text('Dinner'), findsOneWidget);
 
-    await tester.tap(find.byKey(const Key('photo-viewer-gesture')).last);
+    await tester.tapAt(const Offset(300, 300));
     await tester.pumpAndSettle();
     expect(find.text('2 / 2'), findsNothing);
-    await tester.tap(find.byKey(const Key('photo-viewer-gesture')).last);
+    await tester.tapAt(const Offset(300, 300));
     await tester.pumpAndSettle();
     expect(find.text('2 / 2'), findsOneWidget);
 
