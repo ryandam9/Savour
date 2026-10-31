@@ -6,7 +6,7 @@ import '../services/vault_repository.dart';
 import '../theme/savour_theme.dart';
 import '../widgets/empty_album.dart';
 import '../widgets/vault_image.dart';
-import 'moment_screen.dart';
+import 'photo_viewer_screen.dart';
 
 class AlbumScreen extends StatefulWidget {
   const AlbumScreen({super.key, required this.repository, required this.onAdd});
@@ -133,6 +133,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                     _MasonryMonth(
                       entries: group.value,
                       repository: widget.repository,
+                      allIds: entries.map((entry) => entry.id).toList(),
                     ),
                     const SizedBox(height: 22),
                   ],
@@ -173,9 +174,10 @@ class _FilterPill extends StatelessWidget {
 }
 
 class _MasonryMonth extends StatelessWidget {
-  const _MasonryMonth({required this.entries, required this.repository});
+  const _MasonryMonth({required this.entries, required this.repository, required this.allIds});
   final List<FoodEntry> entries;
   final VaultRepository repository;
+  final List<String> allIds;
 
   @override
   Widget build(BuildContext context) {
@@ -187,6 +189,7 @@ class _MasonryMonth extends StatelessWidget {
         child: _PhotoTile(
           entry: entries[i],
           repository: repository,
+          allIds: allIds,
           height: i % 4 == 0 || i % 4 == 3 ? 235 : 177,
         ),
       );
@@ -208,15 +211,16 @@ class _MasonryMonth extends StatelessWidget {
 }
 
 class _PhotoTile extends StatelessWidget {
-  const _PhotoTile({required this.entry, required this.repository, required this.height});
+  const _PhotoTile({required this.entry, required this.repository, required this.allIds, required this.height});
   final FoodEntry entry;
   final VaultRepository repository;
+  final List<String> allIds;
   final double height;
 
   @override
   Widget build(BuildContext context) => GestureDetector(
     onTap: () => Navigator.push(context, MaterialPageRoute(
-      builder: (_) => MomentScreen(repository: repository, id: entry.id),
+      builder: (_) => PhotoViewerScreen(repository: repository, entryIds: allIds, initialId: entry.id),
     )),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(17),

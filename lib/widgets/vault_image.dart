@@ -11,12 +11,14 @@ class VaultImage extends StatefulWidget {
     required this.entryId,
     this.fullResolution = false,
     this.fit = BoxFit.cover,
+    this.backgroundColor = SavourColors.sand,
   });
 
   final VaultRepository repository;
   final String entryId;
   final bool fullResolution;
   final BoxFit fit;
+  final Color backgroundColor;
 
   @override
   State<VaultImage> createState() => _VaultImageState();
@@ -52,15 +54,15 @@ class _VaultImageState extends State<VaultImage> {
     builder: (context, snapshot) {
       if (snapshot.hasError) {
         return Container(
-          color: SavourColors.sand,
+          color: widget.backgroundColor,
           alignment: Alignment.center,
           child: const Icon(Icons.broken_image_outlined, color: SavourColors.muted),
         );
       }
       if (!snapshot.hasData) {
-        return const ColoredBox(
-          color: SavourColors.sand,
-          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        return ColoredBox(
+          color: widget.backgroundColor,
+          child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
         );
       }
       return Image.memory(
@@ -70,9 +72,9 @@ class _VaultImageState extends State<VaultImage> {
         height: double.infinity,
         gaplessPlayback: true,
         errorBuilder: (context, error, stackTrace) =>
-            const ColoredBox(
-              color: SavourColors.sand,
-              child: Center(child: Icon(Icons.broken_image_outlined)),
+            ColoredBox(
+              color: widget.backgroundColor,
+              child: const Center(child: Icon(Icons.broken_image_outlined)),
             ),
       );
     },

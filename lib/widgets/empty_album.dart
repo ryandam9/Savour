@@ -82,9 +82,9 @@ class _AlbumIllustration extends CustomPainter {
     canvas.rotate(0.16);
     canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(2, 4, 133, 156), const Radius.circular(10)), shadow);
     canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(0, 0, 133, 156), const Radius.circular(10)), paper);
-    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(8, 8, 117, 111), const Radius.circular(6)), const Paint()..color = Color(0xFFE9D8C1));
-    canvas.drawOval(const Rect.fromLTWH(24, 27, 85, 79), const Paint()..color = Color(0xFFF9F1E6));
-    canvas.drawOval(const Rect.fromLTWH(32, 33, 68, 65), const Paint()..color = Color(0xFFD38D64));
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(8, 8, 117, 111), const Radius.circular(6)), Paint()..color = Color(0xFFE9D8C1));
+    canvas.drawOval(const Rect.fromLTWH(24, 27, 85, 79), Paint()..color = Color(0xFFF9F1E6));
+    canvas.drawOval(const Rect.fromLTWH(32, 33, 68, 65), Paint()..color = Color(0xFFD38D64));
     for (var i = 0; i < 6; i++) {
       canvas.drawOval(Rect.fromLTWH(35 + (i % 3) * 21, 44 + (i ~/ 3) * 26, 12, 24), green);
     }

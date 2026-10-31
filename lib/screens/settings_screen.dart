@@ -30,25 +30,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || Platform.isWindows) {
       try { supported = await LocalAuthentication().isDeviceSupported(); } catch (_) { /* unsupported */ }
     }
-    if (mounted) setState(() { _lock = enabled; _supported = supported; });
+    if (mounted) { setState(() { _lock = enabled; _supported = supported; }); }
   }
 
   Future<void> _toggleLock(bool enabled) async {
-    if (_changing) return;
+    if (_changing) { return; }
     setState(() => _changing = true);
     try {
       final authenticated = await LocalAuthentication().authenticate(
         localizedReason: enabled ? 'Protect your Savour album' : 'Confirm turning off album lock',
         persistAcrossBackgrounding: true,
       );
-      if (!authenticated) return;
+      if (!authenticated) { return; }
       await widget.repository.setAppLockEnabled(enabled);
       await widget.onLockChanged(enabled);
-      if (mounted) setState(() => _lock = enabled);
+      if (mounted) { setState(() => _lock = enabled); }
     } catch (error) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not change lock setting: $error')));
+      if (mounted) { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not change lock setting: $error'))); }
     } finally {
-      if (mounted) setState(() => _changing = false);
+      if (mounted) { setState(() => _changing = false); }
     }
   }
 
@@ -64,12 +64,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
-    if (approved != true || !mounted) return;
+    if (approved != true || !mounted) { return; }
     try {
       await widget.repository.deleteEverything();
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your album has been cleared.')));
+      if (mounted) { ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your album has been cleared.'))); }
     } catch (error) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not clear album: $error')));
+      if (mounted) { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not clear album: $error'))); }
     }
   }
 

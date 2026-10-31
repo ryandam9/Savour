@@ -5,7 +5,7 @@ import '../models/food_entry.dart';
 import '../services/vault_repository.dart';
 import '../theme/savour_theme.dart';
 import '../widgets/vault_image.dart';
-import 'moment_screen.dart';
+import 'photo_viewer_screen.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key, required this.repository});
@@ -70,7 +70,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 IconButton(tooltip: 'Next month', onPressed: () => _moveMonth(1), icon: const Icon(Icons.chevron_right_rounded)),
               ]),
               const SizedBox(height: 15),
-              const Row(children: [
+              Row(children: [
                 for (final label in ['M', 'T', 'W', 'T', 'F', 'S', 'S'])
                   Expanded(child: Center(child: Text(label, style: TextStyle(fontWeight: FontWeight.w700, color: SavourColors.muted, fontSize: 11)))),
               ]),
@@ -122,7 +122,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ]),
             )
           else
-            for (final entry in selected) _CalendarMoment(entry: entry, repository: widget.repository),
+            for (final entry in selected) _CalendarMoment(
+              entry: entry,
+              repository: widget.repository,
+              dayIds: selected.map((moment) => moment.id).toList(),
+            ),
         ]);
       },
     ),
@@ -130,14 +134,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
 }
 
 class _CalendarMoment extends StatelessWidget {
-  const _CalendarMoment({required this.entry, required this.repository});
+  const _CalendarMoment({required this.entry, required this.repository, required this.dayIds});
   final FoodEntry entry;
   final VaultRepository repository;
+  final List<String> dayIds;
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 12),
     child: InkWell(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => MomentScreen(repository: repository, id: entry.id))),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PhotoViewerScreen(repository: repository, entryIds: dayIds, initialId: entry.id))),
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(9),
