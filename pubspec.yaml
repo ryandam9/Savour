@@ -41,8 +41,10 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: assets/branding/savour_icon.png
-  # Android 8+ adaptive icon. The foreground already has safe-zone padding.
-  adaptive_icon_background: "#FAF1E2"
+  # Android 8+ (API 26+): genuine separate layers, no pre-masked corners.
+  adaptive_icon_background: assets/branding/savour_icon_background.png
   adaptive_icon_foreground: assets/branding/savour_icon_foreground.png
-  adaptive_icon_foreground_inset: 0
+  adaptive_icon_foreground_inset: 0 # source artwork already occupies the 66dp safe zone
+  # Android 13+ (API 33+): dynamic-colour themed icon foreground.
+  adaptive_icon_monochrome: assets/branding/savour_icon_monochrome.png
   remove_alpha_ios: true

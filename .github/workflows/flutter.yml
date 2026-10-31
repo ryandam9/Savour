@@ -15,6 +15,8 @@ jobs:
           cache: true
       - name: Create native platform projects
         run: bash tool/setup_platforms.sh
+      - name: Validate iOS and Android launcher icons
+        run: python3 tool/verify_launcher_icons.py
       - name: Dart format
         run: dart format lib test
       - name: Flutter analyse
