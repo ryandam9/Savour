@@ -74,9 +74,13 @@ void main() {
     expect(find.text('Dinner'), findsOneWidget);
 
     await tester.tapAt(const Offset(300, 300));
+    // Single taps wait for the double-tap gesture deadline.
+    await tester.pump(const Duration(milliseconds: 400));
     await tester.pumpAndSettle();
     expect(find.text('2 / 2'), findsNothing);
     await tester.tapAt(const Offset(300, 300));
+    // Single taps wait for the double-tap gesture deadline.
+    await tester.pump(const Duration(milliseconds: 400));
     await tester.pumpAndSettle();
     expect(find.text('2 / 2'), findsOneWidget);
 
