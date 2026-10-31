@@ -18,7 +18,7 @@ ThemeData buildSavourTheme() {
     brightness: Brightness.light,
     surface: SavourColors.cream,
   );
-  return ThemeData(
+  final theme = ThemeData(
     useMaterial3: true,
     fontFamily: 'DM Sans',
     colorScheme: scheme.copyWith(
@@ -60,11 +60,50 @@ ThemeData buildSavourTheme() {
       behavior: SnackBarBehavior.floating,
     ),
     dividerColor: SavourColors.line,
+    // The scheme's outline is the pale divider colour, which made the off
+    // switch nearly invisible, so give switches explicit colours.
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return Colors.white;
+        return SavourColors.muted;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return SavourColors.terracotta;
+        return SavourColors.sand;
+      }),
+      trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return Colors.transparent;
+        return SavourColors.muted;
+      }),
+    ),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: SavourColors.terracotta,
     ),
   );
+  return theme.copyWith(textTheme: _liningFigures(theme.textTheme));
 }
+
+// Cormorant Garamond defaults to old-style numerals, where "1" looks like a
+// capital "I". Every text style inherits lining (modern) numerals instead.
+const _lining = [FontFeature.liningFigures()];
+
+TextTheme _liningFigures(TextTheme theme) => TextTheme(
+  displayLarge: theme.displayLarge?.copyWith(fontFeatures: _lining),
+  displayMedium: theme.displayMedium?.copyWith(fontFeatures: _lining),
+  displaySmall: theme.displaySmall?.copyWith(fontFeatures: _lining),
+  headlineLarge: theme.headlineLarge?.copyWith(fontFeatures: _lining),
+  headlineMedium: theme.headlineMedium?.copyWith(fontFeatures: _lining),
+  headlineSmall: theme.headlineSmall?.copyWith(fontFeatures: _lining),
+  titleLarge: theme.titleLarge?.copyWith(fontFeatures: _lining),
+  titleMedium: theme.titleMedium?.copyWith(fontFeatures: _lining),
+  titleSmall: theme.titleSmall?.copyWith(fontFeatures: _lining),
+  bodyLarge: theme.bodyLarge?.copyWith(fontFeatures: _lining),
+  bodyMedium: theme.bodyMedium?.copyWith(fontFeatures: _lining),
+  bodySmall: theme.bodySmall?.copyWith(fontFeatures: _lining),
+  labelLarge: theme.labelLarge?.copyWith(fontFeatures: _lining),
+  labelMedium: theme.labelMedium?.copyWith(fontFeatures: _lining),
+  labelSmall: theme.labelSmall?.copyWith(fontFeatures: _lining),
+);
 
 TextStyle editorialTitle({double size = 38, FontWeight weight = FontWeight.w500}) =>
     TextStyle(
