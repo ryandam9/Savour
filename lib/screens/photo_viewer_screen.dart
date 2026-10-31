@@ -148,7 +148,7 @@ class _PhotoViewerScreenState extends State<PhotoViewerScreen> {
                             maxLines: 2, overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               color: Colors.white, fontSize: 23,
-                              fontFamily: 'serif', fontWeight: FontWeight.w500,
+                              fontFamily: 'Cormorant Garamond', fontWeight: FontWeight.w500,
                             ),
                           ),
                           const SizedBox(height: 5),

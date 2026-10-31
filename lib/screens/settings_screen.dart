@@ -91,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const Icon(Icons.photo_album_outlined, size: 42, color: Color(0xFFFFE2D4)),
             const SizedBox(width: 20),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('${widget.repository.count}', style: const TextStyle(fontFamily: 'serif', fontSize: 35, color: Colors.white, height: 1)),
+              Text('${widget.repository.count}', style: const TextStyle(fontFamily: 'Cormorant Garamond', fontSize: 35, color: Colors.white, height: 1)),
               const SizedBox(height: 6),
               const Text('memories kept safely', style: TextStyle(color: Color(0xFFFFE2D4), fontSize: 12)),
             ]),
@@ -141,7 +141,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         const SizedBox(height: 31),
         const Center(child: Text('savour.  ·  VERSION 0.1.0', style: TextStyle(fontSize: 10, letterSpacing: 1.8, fontWeight: FontWeight.w800, color: SavourColors.muted))),
         const SizedBox(height: 8),
-        const Center(child: Text('Good moments deserve a place to live.', style: TextStyle(fontFamily: 'serif', color: SavourColors.muted, fontSize: 14))),
+        const Center(child: Text('Good moments deserve a place to live.', style: TextStyle(fontFamily: 'Cormorant Garamond', color: SavourColors.muted, fontSize: 14))),
       ]),
     ),
   );

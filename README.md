@@ -90,3 +90,9 @@ The journal itself, including titles, description, timestamp and favourites, is 
 ## Build status
 
 The project is source-complete, but this workspace did not have Flutter/Dart installed and package downloads were blocked. It was **not** possible to run `flutter analyze`, widget tests or build an APK here. The provided setup script and GitHub Actions workflow are designed for verification on a machine or CI runner with Flutter available.
+
+## Typography
+
+Savour uses **Cormorant Garamond** for editorial headings and photo captions, and **DM Sans** for all interface text, labels and controls. Both are free fonts licensed under the SIL Open Font License 1.1.
+
+`bash tool/setup_platforms.sh` downloads pinned upstream font builds and their license files during development / CI. The resulting font assets are **bundled into the application** so neither a network connection nor an external font provider is needed when opening Savour offline. `tool/download_fonts.py` can be run again directly if only fonts need refreshing. The font files generated in `assets/fonts/` are intentionally excluded from Git; obtain them using the setup script before invoking `flutter run`, `flutter test` or `flutter build`.

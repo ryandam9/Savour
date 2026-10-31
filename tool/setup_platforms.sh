@@ -36,6 +36,8 @@ cp "$TEMP_DIR/.gitignore" .gitignore
 # Flutter may add the example counter-app widget test, which is not ours.
 rm -f test/widget_test.dart
 python3 tool/configure_platforms.py
+# A deterministic build bundles fonts so no font download occurs on-device.
+python3 tool/download_fonts.py
 flutter pub get
 # Generate installed launcher icons from supplied 1024px source.
 dart run flutter_launcher_icons

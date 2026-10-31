@@ -31,3 +31,7 @@ linux/flutter/ephemeral/
 *.mor
 *.mor.pending
 .env
+
+# Reproducible upstream fonts are fetched at setup (not committed).
+assets/fonts/*.ttf
+assets/fonts/*.txt
