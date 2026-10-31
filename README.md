@@ -6,7 +6,8 @@ Photos are the point: capture your meals, optionally name them, add a short memo
 
 ## Included in this first build
 
-- **Photo-first album:** two-column, varied-height gallery grouped by month, full-screen photo details.
+- **Photo-first album:** two-column, varied-height gallery grouped by month. Tap a photo to view its uncropped original full-screen.
+- **Full-screen viewer:** pinch to zoom up to 5×, double-tap to zoom/reset, swipe between the current album or day’s photos, tap to hide controls, and open meal details from the info button.
 - **Capture or import:** iOS and Android camera, gallery picker on supported platforms.
 - **Optional name and notes:** no form field is required; just a photo.
 - **Editable timestamp:** current date/time is prefilled and can be changed.
@@ -75,9 +76,9 @@ The journal itself, including titles, description, timestamp and favourites, is 
 - `lib/models/food_entry.dart`: immutable entry and JSON representation.
 - `lib/services/vault_cipher.dart`: authenticated encryption/decryption.
 - `lib/services/vault_repository.dart`: encrypted local file persistence, thumbnail generation, change notifications.
-- `lib/screens/`: album, calendar, add/edit, photo details, privacy and settings.
+- `lib/screens/`: album, calendar, full-screen zoomable viewer, add/edit, photo details, privacy and settings.
 - `lib/theme/`, `lib/widgets/`: design system, reusable image loader and empty state.
-- `test/`: encryption round-trip/tampering and model tests.
+- `test/`: encryption round-trip/tampering, model tests and photo viewer widget tests.
 - `tool/`: repeatable native Flutter bootstrap and platform permissions.
 
 ## Next milestones

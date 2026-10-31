@@ -6,6 +6,7 @@ import '../services/vault_repository.dart';
 import '../theme/savour_theme.dart';
 import '../widgets/vault_image.dart';
 import 'editor_screen.dart';
+import 'photo_viewer_screen.dart';
 
 class MomentScreen extends StatelessWidget {
   const MomentScreen({super.key, required this.repository, required this.id});
@@ -24,12 +25,12 @@ class MomentScreen extends StatelessWidget {
         ],
       ),
     );
-    if (confirmed != true || !context.mounted) return;
+    if (confirmed != true || !context.mounted) { return; }
     try {
       await repository.delete(entry);
-      if (context.mounted) Navigator.pop(context);
+      if (context.mounted) { Navigator.pop(context); }
     } catch (error) {
-      if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not delete: $error')));
+      if (context.mounted) { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not delete: $error'))); }
     }
   }
 
@@ -37,7 +38,7 @@ class MomentScreen extends StatelessWidget {
     try {
       await repository.toggleFavourite(entry);
     } catch (error) {
-      if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not update: $error')));
+      if (context.mounted) { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not update: $error'))); }
     }
   }
 
@@ -75,9 +76,18 @@ class MomentScreen extends StatelessWidget {
               )),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              background: Hero(
-                tag: 'savour-${current.id}',
-                child: VaultImage(repository: repository, entryId: current.id, fullResolution: true),
+              background: GestureDetector(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (_) => PhotoViewerScreen(
+                    repository: repository,
+                    entryIds: repository.entries.map((entry) => entry.id).toList(),
+                    initialId: current.id,
+                  ),
+                )),
+                child: Hero(
+                  tag: 'savour-${current.id}',
+                  child: VaultImage(repository: repository, entryId: current.id, fullResolution: true),
+                ),
               ),
             ),
           ),

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -106,8 +105,8 @@ class VaultRepository extends ChangeNotifier {
     String name = '',
     String description = '',
   }) async {
-    if (!_ready) throw const VaultException('Vault is not ready.');
-    if (photo.isEmpty) throw const VaultException('The selected photo is empty.');
+    if (!_ready) { throw const VaultException('Vault is not ready.'); }
+    if (photo.isEmpty) { throw const VaultException('The selected photo is empty.'); }
     final now = DateTime.now();
     final random = Random.secure();
     final id = '${now.microsecondsSinceEpoch}_${random.nextInt(0x7fffffff).toRadixString(16)}';
@@ -139,7 +138,7 @@ class VaultRepository extends ChangeNotifier {
   Future<void> update(FoodEntry changed) async {
     final old = List<FoodEntry>.of(_entries);
     final index = _entries.indexWhere((entry) => entry.id == changed.id);
-    if (index < 0) throw const VaultException('This photo no longer exists.');
+    if (index < 0) { throw const VaultException('This photo no longer exists.'); }
     _entries[index] = changed;
     _sortEntries();
     try {
@@ -189,7 +188,7 @@ class VaultRepository extends ChangeNotifier {
 
   Future<Uint8List> thumbnail(String id) async {
     final cached = _thumbnailCache[id];
-    if (cached != null) return cached;
+    if (cached != null) { return cached; }
     final file = _thumb(id);
     final data = await _cipher.decrypt(await file.readAsBytes());
     _rememberThumbnail(id, data);
@@ -208,7 +207,7 @@ class VaultRepository extends ChangeNotifier {
   }
 
   Future<void> _deleteIfExists(File file) async {
-    if (await file.exists()) await file.delete();
+    if (await file.exists()) { await file.delete(); }
   }
 }
 
