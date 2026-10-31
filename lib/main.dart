@@ -254,41 +254,58 @@ class _HomeShellState extends State<HomeShell> {
     return Scaffold(
       extendBody: true,
       body: IndexedStack(index: _tab, children: pages),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Semantics(
-        label: 'Add food photo',
-        button: true,
-        child: FloatingActionButton(
-          heroTag: 'capture-food',
-          onPressed: _importing ? null : _showAddOptions,
-          backgroundColor: SavourColors.terracotta,
-          foregroundColor: Colors.white,
-          elevation: 3,
-          shape: const CircleBorder(),
-          child: _importing
-              ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-              : const Icon(Icons.add_a_photo_outlined, size: 25),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: SavourColors.cream,
-        surfaceTintColor: Colors.transparent,
-        height: 74,
-        padding: EdgeInsets.zero,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8,
-        child: Row(
-          children: [
-            Expanded(child: _NavItem(icon: Icons.photo_library_outlined, selectedIcon: Icons.photo_library_rounded, title: 'Album', selected: _tab == 0, onTap: () => setState(() => _tab = 0))),
-            Expanded(child: _NavItem(icon: Icons.calendar_month_outlined, selectedIcon: Icons.calendar_month_rounded, title: 'Calendar', selected: _tab == 1, onTap: () => setState(() => _tab = 1))),
-            const SizedBox(width: 65),
-            Expanded(child: _NavItem(icon: Icons.tune_outlined, selectedIcon: Icons.tune_rounded, title: 'Settings', selected: _tab == 2, onTap: () => setState(() => _tab = 2))),
-          ],
+      // A floating pill with the tabs, and the camera button beside it.
+      bottomNavigationBar: SafeArea(
+        top: false,
+        minimum: const EdgeInsets.only(bottom: 12),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+          child: Row(children: [
+            Expanded(
+              child: Container(
+                height: _barHeight,
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: SavourColors.cream,
+                  borderRadius: BorderRadius.circular(_barHeight / 2),
+                  border: Border.all(color: SavourColors.line),
+                  boxShadow: _floatingShadow,
+                ),
+                child: Row(children: [
+                  for (final (i, icon, selectedIcon, title) in _tabs)
+                    Expanded(
+                      child: _NavItem(
+                        icon: icon,
+                        selectedIcon: selectedIcon,
+                        title: title,
+                        selected: _tab == i,
+                        onTap: () => setState(() => _tab = i),
+                      ),
+                    ),
+                ]),
+              ),
+            ),
+            const SizedBox(width: 12),
+            _CaptureButton(importing: _importing, onPressed: _showAddOptions),
+          ]),
         ),
       ),
     );
   }
 }
+
+const double _barHeight = 66;
+
+const _floatingShadow = [
+  BoxShadow(color: Color(0x1A302720), blurRadius: 24, offset: Offset(0, 8)),
+  BoxShadow(color: Color(0x0D302720), blurRadius: 4, offset: Offset(0, 1)),
+];
+
+const _tabs = [
+  (0, Icons.photo_library_outlined, Icons.photo_library_rounded, 'Album'),
+  (1, Icons.calendar_month_outlined, Icons.calendar_month_rounded, 'Calendar'),
+  (2, Icons.tune_outlined, Icons.tune_rounded, 'Settings'),
+];
 
 class _NavItem extends StatelessWidget {
   const _NavItem({required this.icon, required this.selectedIcon, required this.title, required this.selected, required this.onTap});
@@ -298,15 +315,63 @@ class _NavItem extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(selected ? selectedIcon : icon, color: selected ? SavourColors.terracotta : SavourColors.muted, size: 23),
-        const SizedBox(height: 4),
-        Text(title, style: TextStyle(fontSize: 10, fontWeight: selected ? FontWeight.w800 : FontWeight.w500, color: selected ? SavourColors.terracotta : SavourColors.muted)),
-      ],
+  Widget build(BuildContext context) {
+    final color = selected ? SavourColors.terracotta : SavourColors.muted;
+    return Semantics(
+      selected: selected,
+      button: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+          decoration: BoxDecoration(
+            color: selected ? SavourColors.paleRose : Colors.transparent,
+            borderRadius: BorderRadius.circular(_barHeight / 2),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(selected ? selectedIcon : icon, color: color, size: 22),
+              const SizedBox(height: 3),
+              Text(title, style: TextStyle(fontSize: 10.5, letterSpacing: 0.2, fontWeight: selected ? FontWeight.w700 : FontWeight.w500, color: color)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CaptureButton extends StatelessWidget {
+  const _CaptureButton({required this.importing, required this.onPressed});
+  final bool importing;
+  final VoidCallback onPressed;
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: 'Add food photo',
+    button: true,
+    child: Container(
+      width: _barHeight,
+      height: _barHeight,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: _floatingShadow,
+      ),
+      child: Material(
+        color: SavourColors.terracotta,
+        shape: const CircleBorder(),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: importing ? null : onPressed,
+          child: Center(
+            child: importing
+                ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                : const Icon(Icons.add_a_photo_outlined, size: 25, color: Colors.white),
+          ),
+        ),
+      ),
     ),
   );
 }

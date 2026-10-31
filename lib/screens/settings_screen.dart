@@ -106,7 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: const Icon(Icons.lock_outline_rounded, color: SavourColors.terracotta),
             title: const Text('App lock', style: TextStyle(fontWeight: FontWeight.w700)),
             subtitle: Text(_supported ? 'Use your device’s fingerprint, face, or passcode' : 'Device authentication unavailable here', style: const TextStyle(fontSize: 11, color: SavourColors.muted)),
-            trailing: Switch(value: _lock, onChanged: _changing || !_supported ? null : _toggleLock, activeThumbColor: SavourColors.terracotta),
+            trailing: Switch(value: _lock, onChanged: _changing || !_supported ? null : _toggleLock),
           ),
           const Divider(height: 1, indent: 18, endIndent: 18),
           const ListTile(
@@ -114,17 +114,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: Icon(Icons.shield_outlined, color: SavourColors.terracotta),
             title: Text('Encrypted on this device', style: TextStyle(fontWeight: FontWeight.w700)),
             subtitle: Text('Photos and journal details are protected using AES-256-GCM.', style: TextStyle(fontSize: 11, color: SavourColors.muted)),
-          ),
-        ]),
-        const SizedBox(height: 29),
-        Text('YOUR DATA', style: eyebrow()),
-        const SizedBox(height: 12),
-        const _SettingsPanel(children: [
-          ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: 17, vertical: 8),
-            leading: Icon(Icons.cloud_off_outlined, color: SavourColors.terracotta),
-            title: Text('No cloud account', style: TextStyle(fontWeight: FontWeight.w700)),
-            subtitle: Text('Your memories stay here. Export and restore are planned for a future release; there is no backup yet.', style: TextStyle(fontSize: 11, color: SavourColors.muted)),
           ),
         ]),
         const SizedBox(height: 29),
