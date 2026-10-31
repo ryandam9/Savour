@@ -1,0 +1,33 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+coverage/
+*.iml
+.idea/
+.vscode/
+
+# Native build products
+android/.gradle/
+android/local.properties
+android/key.properties
+android/captures/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+macos/Pods/
+linux/flutter/ephemeral/
+
+# Private material, never store test photos or live keys
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+*.mor
+*.mor.pending
+.env
