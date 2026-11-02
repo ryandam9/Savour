@@ -77,12 +77,10 @@ class MomentScreen extends StatelessWidget {
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: GestureDetector(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
-                  builder: (_) => PhotoViewerScreen(
-                    repository: repository,
-                    entryIds: repository.entries.map((entry) => entry.id).toList(),
-                    initialId: current.id,
-                  ),
+                onTap: () => Navigator.of(context).push(PhotoViewerScreen.route(
+                  repository: repository,
+                  entryIds: repository.entries.map((entry) => entry.id).toList(),
+                  initialId: current.id,
                 )),
                 child: Hero(
                   tag: 'savour-${current.id}',
