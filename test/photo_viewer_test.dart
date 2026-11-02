@@ -41,9 +41,9 @@ class _ViewerVault extends VaultRepository {
     return _samplePhoto;
   }
 
+  // Only the filmstrip may use thumbnails; the main photo is full resolution.
   @override
-  Future<Uint8List> thumbnail(String id) async =>
-      throw StateError('The viewer must never load a thumbnail');
+  Future<Uint8List> thumbnail(String id) async => _samplePhoto;
 }
 
 void main() {
@@ -119,5 +119,50 @@ void main() {
           .value.getMaxScaleOnAxis(),
       closeTo(1, 0.01),
     );
+  });
+
+  testWidgets('swiping down closes the viewer', (tester) async {
+    final vault = _ViewerVault();
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(body: Builder(builder: (context) => TextButton(
+        onPressed: () => Navigator.of(context).push(PhotoViewerScreen.route(
+          repository: vault,
+          entryIds: const ['first', 'second'],
+          initialId: 'first',
+        )),
+        child: const Text('Open viewer'),
+      ))),
+    ));
+    await tester.tap(find.text('Open viewer'));
+    await tester.pumpAndSettle();
+
+    // A short drag springs back.
+    await tester.dragFrom(const Offset(300, 300), const Offset(0, 40));
+    await tester.pumpAndSettle();
+    expect(find.byType(PhotoViewerScreen), findsOneWidget);
+
+    await tester.dragFrom(const Offset(300, 300), const Offset(0, 260));
+    await tester.pumpAndSettle();
+    expect(find.byType(PhotoViewerScreen), findsNothing);
+  });
+
+  testWidgets('tapping a filmstrip thumbnail jumps to that photo', (tester) async {
+    final vault = _ViewerVault();
+    await tester.pumpWidget(MaterialApp(
+      home: PhotoViewerScreen(
+        repository: vault,
+        entryIds: const ['first', 'second'],
+        initialId: 'first',
+      ),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('1 / 2'), findsOneWidget);
+
+    // The current thumbnail sits in the centre; the next one is to its right.
+    final strip = tester.getCenter(find.byType(ListView));
+    await tester.tapAt(strip + const Offset(50, 0));
+    await tester.pumpAndSettle();
+    expect(find.text('2 / 2'), findsOneWidget);
+    expect(find.text('Dinner'), findsOneWidget);
   });
 }

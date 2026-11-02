@@ -219,8 +219,8 @@ class _PhotoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-    onTap: () => Navigator.push(context, MaterialPageRoute(
-      builder: (_) => PhotoViewerScreen(repository: repository, entryIds: allIds, initialId: entry.id),
+    onTap: () => Navigator.push(context, PhotoViewerScreen.route(
+      repository: repository, entryIds: allIds, initialId: entry.id,
     )),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(17),
